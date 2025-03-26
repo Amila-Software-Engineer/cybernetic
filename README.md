@@ -67,5 +67,25 @@ these are the end points used role base authentication for secure endpoints
     password: ""
    }
 
+  # user Cretate Course only admin can create courses
+   http://localhost:5000/api/v1/courses
+
+   with payload {
+    title: "Java Spring boot",
+    description: "This course for absolute beginers"
+   }
+
+    # user view all  Course any role can see all available courses
+   http://localhost:5000/api/v1/courses/viewall
+
+
+  # user Cretate Course only admin can create courses
+   http://localhost:5000/api/v1/courses/enrole
+
+   with payload {
+    "userId": 1,   
+    "courseId": 2  
+   }
+   
 
 ```
