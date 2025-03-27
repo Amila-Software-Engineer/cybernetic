@@ -2,6 +2,7 @@ import { log } from "console";
 import jwt from "jsonwebtoken";
 import { hash, compare } from "bcrypt";
 
+export let user;
 export const verifyToken = (req, res, next) => {
     let token;
     let  authHeader =  req.headers.Authorization || req.headers.authorization;
@@ -17,7 +18,7 @@ export const verifyToken = (req, res, next) => {
             req.user = decode;
             console.log(token);
             
-            console.log("The decode user is ", req.user);
+            user = req.user;
             next()
             
         } catch (err) {

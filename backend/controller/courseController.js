@@ -1,6 +1,6 @@
 
 import prisma from "../prisma/prismaClient.js";
-
+import {user} from "../middleware/authMiddleware.js";
 
 export const createCourse = async (
     req,res
@@ -56,7 +56,9 @@ export const createCourse = async (
 export const enrollStudent = async (req, res) => {
   try {
     const { userId, courseId } = req.body;
-
+    // if(token.role)
+    console.log('what is this ',user);
+    
    
     const existingEnrollment = await prisma.enrollment.findUnique({
       where: {

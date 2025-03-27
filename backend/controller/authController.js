@@ -21,7 +21,7 @@ export const register = async (
      
     } catch (error) {
       console.log(error);
-      return res.status(200).json({ message: "ERROR", cause: error.message });
+      return res.status(400).json({ message: "ERROR", cause: error.message });
     }
   };
   
