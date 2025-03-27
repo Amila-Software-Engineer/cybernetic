@@ -1,1 +1,69 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles for your Angular application */
+$primary-color: #3498db;
+$secondary-color: #2c3e50;
+$background-color: #f4f4f4;
+$font-family: Arial, sans-serif;
+
+/* Set basic typography */
+body {
+  font-family: $font-family;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Set a background color */
+html {
+  background-color: $background-color;
+}
+
+/* Basic styling for headings */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0.5rem 0;
+  color: $secondary-color;
+}
+
+/* Links styling */
+a {
+  text-decoration: none;
+  color: $primary-color;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+/* Button styles */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: $primary-color;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
