@@ -2,12 +2,23 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
 
+
+
+
 ## Development server
 
 To start a local development server, run:
 
 ```bash
 ng serve
+```
+
+## Admin Previlages
+
+In order to log in as a admin use following credentials
+```bash
+ username : admin,
+ password : admin123
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -33,6 +44,8 @@ To build the project run:
 ```bash
 ng build
 ```
+
+
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 

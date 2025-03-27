@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-
+import {jwtDecode} from 'jwt-decode';
 
 @Component({
   selector: 'app-courses',
@@ -46,6 +46,7 @@ export class CoursesComponent {
   COURSE_DATA?: Course[] = [];
   dataSource = new MatTableDataSource<Course>(this.COURSE_DATA);
 
+  // token?: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
@@ -60,14 +61,19 @@ export class CoursesComponent {
       title: ['', Validators.required],
       description: ['', Validators.required]
     });
+   
   }
 
-
+ 
 
   ngOnInit() {
+    
+
+    // this.token = localStorage.getItem('lsmtoken') ;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
+    this.decodeToken(localStorage.getItem('lsmtoken'))
     this.initialize();
   }
 
@@ -87,6 +93,18 @@ export class CoursesComponent {
     });
   }
 
+  decodeToken(token: any) {
+    try {
+      console.log(token);
+      
+      const decoded = jwtDecode(token);
+      console.log(decoded);
+      
+      return decoded; 
+    } catch (error) {
+      console.error('Invalid token:', error);
+    }
+  }
   async addCourse() {
     if (this.courseForm.valid) {
       const course: Course = {
@@ -97,33 +115,29 @@ export class CoursesComponent {
       try {
         
         const response = await this.courseService.addCourse(course);
-       
-        
         if (response) {
          console.log(response.message);
          
           alert(response.message);
         } else {
-          
+          alert("something");
         }
       } catch (error) {
-        console.error('Error during login', error);
+        alert("something wernt wor")
+        console.error('Failed to Crate course', error.);
       }
     } else {
-      alert('Username or Password is invalid');
+      alert("Something went wrong. ");
     }
   }
 
 
   editCourse(course: Course) {
-    console.log('Edit Course:', course);
-    this.snackBar.open(`Editing Course: ${course.title}`, 'Close', { duration: 2000 });
+    
   }
 
   deleteCourse(id: number) {
-    console.log('Delete Course ID:', id);
-    this.snackBar.open('Course deleted', 'Undo', { duration: 2000 });
-    this.dataSource.data = this.dataSource.data.filter(course => course.id !== id);
+    
   }
 
 }
