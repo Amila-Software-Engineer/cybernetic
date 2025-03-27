@@ -46,7 +46,6 @@ export class CoursesComponent {
   COURSE_DATA?: Course[] = [];
   dataSource = new MatTableDataSource<Course>(this.COURSE_DATA);
 
-  // token?: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
@@ -69,11 +68,10 @@ export class CoursesComponent {
   ngOnInit() {
     
 
-    // this.token = localStorage.getItem('lsmtoken') ;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    this.decodeToken(localStorage.getItem('lsmtoken'))
+    // this.decodeToken(localStorage.getItem('lsmtoken'))
     this.initialize();
   }
 
@@ -93,18 +91,18 @@ export class CoursesComponent {
     });
   }
 
-  decodeToken(token: any) {
-    try {
-      console.log(token);
+  // decodeToken(token: any) {
+  //   try {
+  //     console.log(token);
       
-      const decoded = jwtDecode(token);
-      console.log(decoded);
+  //     const decoded = jwtDecode(token);
+  //     console.log(decoded);
       
-      return decoded; 
-    } catch (error) {
-      console.error('Invalid token:', error);
-    }
-  }
+  //     return decoded; 
+  //   } catch (error) {
+  //     console.error('Invalid token:', error);
+  //   }
+  // }
   async addCourse() {
     if (this.courseForm.valid) {
       const course: Course = {
@@ -123,11 +121,11 @@ export class CoursesComponent {
           alert("something");
         }
       } catch (error) {
-        alert("something wernt wor")
-        console.error('Failed to Crate course', error.);
+        alert(error)
+        console.error('Failed to Crate course', error);
       }
     } else {
-      alert("Something went wrong. ");
+      alert("Form not valid please fill all the fiels before submit")
     }
   }
 
