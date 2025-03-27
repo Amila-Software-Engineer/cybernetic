@@ -12,7 +12,7 @@ export class AuthService {
   async register(user: User): Promise<[]|undefined>{
     return this.http.post<[]>('http://localhost:5000/api/v1/auth/register', user).toPromise();
   }
-  async login(user: User): Promise<[]|undefined>{
+  async login(user: User): Promise<any|undefined>{
     return this.http.post<[]>('http://localhost:5000/api/v1/auth/login', user).toPromise();
   }
 

@@ -8,6 +8,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../service/auth.service';
 import { User } from '../../../entity/user';
+import { CommonModule } from '@angular/common'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,17 +19,19 @@ import { User } from '../../../entity/user';
     MatFormFieldModule,
     MatInputModule,
     MatGridListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   loginForm: FormGroup;
-
+  alreadyHaveAccount: boolean = true;;
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router:Router
 
   ) {
     this.loginForm = this.fb.group({
@@ -44,27 +48,55 @@ export class LoginComponent {
       };
 
       try {
-        console.log(user);
         
         const response = await this.authService.login(user);
-
+        console.log(response);
+        
         if (response) {
-          // Handle successful login, e.g., navigate to another page or show a success message
-          console.log('Login successful', response);
+         
+          alert('Login successful');
+          localStorage.setItem("lsmtoken", response.token)
+          this.router.navigateByUrl('/layout')
         } else {
-          // Handle login failure, e.g., show an error message
           console.error('Login failed');
         }
       } catch (error) {
         console.error('Error during login', error);
       }
     } else {
-      // Handle form validation errors
-      console.error('Form is invalid');
+      alert('Username or Password is invalid');
     }
   }
 
-  signup() {
+  async signup() {
+    if (this.loginForm.valid) {
+      const user: User = {
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password
+      };
 
+      try {
+        
+        const response = await this.authService.register(user);
+      
+        
+        if (response) {
+         
+          alert('User Registered successfully');
+          this.loginForm.reset();
+          this.alreadyHaveAccount= true;
+        } else {
+          console.error('Registration failed');
+        }
+      } catch (error) {
+        console.error('Error ', error);
+      }
+    } else {
+      alert('Username or Password is invalid');
+    }
+  }
+
+  toggleAccount() {
+    this.alreadyHaveAccount = !this.alreadyHaveAccount; 
   }
 }

@@ -7,12 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list'; 
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatInputModule } from '@angular/material/input'; 
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http'; 
+import { customInterceptor } from './service/custom.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
+    provideHttpClient(withInterceptors([customInterceptor])),
     importProvidersFrom(
       MatCardModule, 
       MatButtonModule,
