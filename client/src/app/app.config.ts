@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list'; 
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatInputModule } from '@angular/material/input'; 
-
+import { HttpClientModule } from '@angular/common/http'; 
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +18,8 @@ export const appConfig: ApplicationConfig = {
       MatButtonModule,
       MatGridListModule, 
       MatFormFieldModule, 
-      MatInputModule 
+      MatInputModule,
+      HttpClientModule 
     )
 
 

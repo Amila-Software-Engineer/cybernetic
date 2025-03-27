@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../../service/auth.service';
+import { User } from '../../../entity/user';
 
 @Component({
   selector: 'app-login',
@@ -23,21 +25,46 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+
+  ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
-  authenticate() {
+  async authenticate() {
     if (this.loginForm.valid) {
-      // Add your authentication logic here
-      console.log(this.loginForm.value);
+      const user: User = {
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password
+      };
+
+      try {
+        console.log(user);
+        
+        const response = await this.authService.login(user);
+
+        if (response) {
+          // Handle successful login, e.g., navigate to another page or show a success message
+          console.log('Login successful', response);
+        } else {
+          // Handle login failure, e.g., show an error message
+          console.error('Login failed');
+        }
+      } catch (error) {
+        console.error('Error during login', error);
+      }
+    } else {
+      // Handle form validation errors
+      console.error('Form is invalid');
     }
   }
 
   signup() {
-    // Add your signup logic here
+
   }
 }
