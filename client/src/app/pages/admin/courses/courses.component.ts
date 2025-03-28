@@ -18,6 +18,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import {jwtDecode} from 'jwt-decode';
+import { AuthService } from '../../../service/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-courses',
@@ -52,6 +54,7 @@ export class CoursesComponent {
   constructor(
     private fb: FormBuilder,
     private courseService: CoursesService,
+    private authService:AuthService,
     private router:Router,
     private snackBar: MatSnackBar
 
@@ -63,46 +66,25 @@ export class CoursesComponent {
    
   }
 
- 
+   decodedTok: any;
+   role:any;
 
   ngOnInit() {
+    this.initialize();
     
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
-    // this.decodeToken(localStorage.getItem('lsmtoken'))
-    this.initialize();
   }
 
   initialize() {
-    this.courseService.viewAll().then((courses: Course[] | undefined) => {
-      if (courses && courses.length > 0) {
-        console.log('API Response:', courses);
-        this.COURSE_DATA = courses; 
-        this.dataSource.data = this.COURSE_DATA;
-      } else {
-        console.warn('No courses received from API.');
-        this.COURSE_DATA = [];
-        this.dataSource.data = [];
-      }
-    }).catch(error => {
-      console.error('Error fetching courses:', error);
-    });
+    this.fetchCourses();
+    this.decodedTok = this.authService.getDecodedToken();
+    this.role = this.decodedTok.__zone_symbol__value.role;
+    
   }
 
-  // decodeToken(token: any) {
-  //   try {
-  //     console.log(token);
-      
-  //     const decoded = jwtDecode(token);
-  //     console.log(decoded);
-      
-  //     return decoded; 
-  //   } catch (error) {
-  //     console.error('Invalid token:', error);
-  //   }
-  // }
+
   async addCourse() {
     if (this.courseForm.valid) {
       const course: Course = {
@@ -129,13 +111,50 @@ export class CoursesComponent {
     }
   }
 
-
-  editCourse(course: Course) {
-    
+  async fetchCourses() {
+    this.courseService.viewAll().then((courses: Course[] | undefined) => {
+      if (courses && courses.length > 0) {
+        this.COURSE_DATA = courses; 
+        this.dataSource.data = this.COURSE_DATA;
+      } else {
+        this.COURSE_DATA = [];
+        this.dataSource.data = [];
+      }
+    }).catch(error => {
+      console.error('Error fetching courses:', error);
+    });
   }
 
-  deleteCourse(id: number) {
+
+  async editCourse(courseId: number, updatedCourse: Course) {
+    try {
+      await this.courseService.updateCourse(courseId, updatedCourse);
+      this.fetchCourses();
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  async deleteCourse(courseId: number) {
+    try {
+      await this.courseService.deleteCourse(courseId);
+      this.fetchCourses(); 
+      
+    } catch (error) {
+      console.log(error);
+      
+      if (error instanceof HttpErrorResponse) {
     
+        console.log('Error status:', error.status);
+        console.log('Error message:', error.message);
+        console.log('Error response body:', error.error); 
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      
+    }
   }
 
 }

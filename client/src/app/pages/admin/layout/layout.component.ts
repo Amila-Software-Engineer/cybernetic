@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { RouterOutlet,RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common'; 
 import { Router } from '@angular/router';
+import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-layout',
   imports: [
     RouterOutlet,
     RouterLink,
     CommonModule,
+    FooterComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'

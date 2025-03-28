@@ -89,3 +89,58 @@ export const enrollStudent = async (req, res) => {
     res.status(500).json({ message: "ERROR", cause: error.message });
   }
 };
+
+
+export const updateCourse = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { title, description } = req.body; 
+
+    const existingCourse = await prisma.course.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!existingCourse) {
+      return res.status(404).json({ message: "Course not found." });
+    }
+
+    const updatedCourse = await prisma.course.update({
+      where: { id: parseInt(id) },
+      data: {
+        title: title || existingCourse.title,
+        description: description || existingCourse.description,
+      },
+    });
+
+    res.status(200).json({
+      message: "Course updated successfully.",
+      course: updatedCourse,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "ERROR", cause: error.message });
+  }
+};
+
+export const deleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params; 
+
+   
+    const existingCourse = await prisma.course.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!existingCourse) {
+      return res.status(404).json({ message: "Course not found." });
+    }
+    await prisma.course.delete({
+      where: { id: parseInt(id) },
+    });
+
+    res.status(200).json({ message: "Course deleted successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "ERROR", cause: error.message });
+  }
+};

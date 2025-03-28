@@ -1,4 +1,4 @@
-<mat-grid-list [cols]="8" rowHeight="8rem">
+<mat-grid-list  *ngIf="role == 'admin'" [cols]="8" rowHeight="8rem">
     <mat-grid-tile [colspan]="8" [rowspan]="6">
       <mat-card>
         <mat-card-header>
@@ -61,7 +61,7 @@
                     <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> Actions </th>
                     <td mat-cell *matCellDef="let course">
-                        <button mat-button color="primary" (click)="editCourse(course)">Edit</button>
+                        <button mat-button color="primary" (click)="editCourse(course.id,course)">Edit</button>
                         <button mat-button color="warn" (click)="deleteCourse(course.id)">Delete</button>
                     </td>
                     </ng-container>
